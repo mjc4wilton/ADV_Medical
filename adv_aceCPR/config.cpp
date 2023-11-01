@@ -158,20 +158,17 @@ class cfgVehicles {
 		ace_cargo_canLoad = 1;
 	};
 	
-	class NATO_Box_Base;
-	class ACE_medicalSupplyCrate: NATO_Box_Base {
-		class TransportItems;
-	};
+	class ACE_medicalSupplyCrate;
 	class ACE_medicalSupplyCrate_advanced: ACE_medicalSupplyCrate {
-		class TransportItems: TransportItems {
+		class TransportItems {
 			MACRO_ADDITEM(adv_aceCPR_AED,1);
 		};
 	};
 };
 
 class ACE_Medical_Treatment_Actions {
-	class fieldDressing;
-	class CPR: fieldDressing {
+	class BasicBandage;
+	class CPR: BasicBandage {
 		callbackSuccess = "adv_aceCPR_fnc_CPR_action";
 		animationMedic = "AinvPknlMstpSnonWnonDr_medic0";
 		animationPatientUnconscious = "AinjPpneMstpSnonWrflDnon_rolltoback";
