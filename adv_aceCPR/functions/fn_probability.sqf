@@ -9,10 +9,11 @@ private _medicLevel = _caller getVariable ["ace_medical_medicClass", getNumber (
 private _probabilities = missionNamespace getVariable ["adv_aceCPR_probabilities", [40,15,5,85]];
 
 //probability depends on medicClass of _caller:
-private _probability = call {
-	if ( _medicLevel isEqualTo 2 ) exitWith { _probabilities select 0 };
-	if ( _medicLevel isEqualTo 1 ) exitWith { _probabilities select 1 };
-	_probabilities select 2
+private _probability = _probabilities select 2;
+if (_medicLevel isEqualTo 2) then {
+	_probability = _probabilities select 0;
+} else if (_medicLevel isEqualTo 1) then {
+	_probability = _probabilities select 1;
 };
 
 //diagnostics
@@ -22,11 +23,7 @@ private _probability = call {
 if ( _probability isEqualTo 0 ) exitWith {0};
 
 //if patient has morphine or epinephrine in his circulation, the probability changes depending on amount of medication in system:
-(_target call adv_aceCPR_fnc_getMedications) params [
-	"_gotMorphine",
-	"_gotEpi",
-	"_gotAdenosine"
-];
+([_target] call adv_aceCPR_fnc_getMedications) params ["_gotMorphine", "_gotEpi", "_gotAdenosine"];
 
 private _reduction = _gotMorphine + _gotAdenosine;
 if ( _reduction > 0 ) then {
@@ -47,16 +44,13 @@ if ( _gotEpi > 0 ) then {
 
 //reduces probability depending on total blood loss of patient:
 private _bloodLoss = [_caller, _target] call adv_aceCPR_fnc_getBloodLoss;
-call {
-	if (_bloodLoss >= 0.3) exitWith {
-		private _probabilityLoss = 10 + (floor random 15);
-		_probability = _probability - _probabilityLoss;
-	};
-	if (_bloodLoss >= 0.15) exitWith {
-		private _probabilityLoss = 5 + (floor random 8);
-		_probability = _probability - _probabilityLoss;	
-	};
+private _probabilityLoss = 0;
+if (_bloodLoss >= 0.3) then {
+	_probabilityLoss = 10 + floor random 15;
+} else if (_bloodLoss >= 0.15) then {
+	_probabilityLoss = 5 + floor random 8;
 };
+_probability = _probability - _probabilityLoss;	
 
 //diagnostics:
 [_caller,format ["probability has been reduced by %1 due to blood loss. New probability is %2",_probabilityLoss,_probability]] call adv_aceCPR_fnc_diag;

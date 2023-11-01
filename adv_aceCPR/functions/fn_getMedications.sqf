@@ -20,20 +20,16 @@ private _result =  [0, 0, 0];
 private _adjustments = _unit getVariable ["ace_medical_medications", []];
 
 {
-	_x params ["_xMed", "_timeAdded", "_timeTillMaxEffect", "_maxTimeInSystem"];
+	_x params ["_medication", "_timeAdded", "_timeTillMaxEffect", "_maxTimeInSystem", "_hrAdjust", "_painAdjust", "_flowAdjust"];
 
 	private _timeInSystem = CBA_missionTime - _timeAdded;
-	private _add = if (_getCount) then {
-		linearConversion [_timeTillMaxEffect, _maxTimeInSystem, _timeInSystem, 1, 0, true];
-	} else {
-		(((_timeInSystem / _timeTillMaxEffect) ^ 2) min 1) * (_maxTimeInSystem - _timeInSystem) / _maxTimeInSystem;
-	};
+	private _add = ((_timeInSystem / _timeTillMaxEffect) ^ 2 min 1) * (_maxTimeInSystem - _timeInSystem) / _maxTimeInSystem;
 
-	switch (_xMed) do {
-		case "Morphine":    { _result set [0, (_result#0) + _add]; };
-		case "Epinephrine": { _result set [1, (_result#1) + _add]; };
-		case "Adenosine":   { _result set [2, (_result#2) + _add]; };
+	switch _medication do {
+		case "Morphine":    { _result set [0, (_result select 0) + _add]; };
+		case "Epinephrine": { _result set [1, (_result select 1) + _add]; };
+		case "Adenosine":   { _result set [2, (_result select 2) + _add]; };
 	};
-} forEach (_adjustments);
+} forEach _adjustments;
 
 _result

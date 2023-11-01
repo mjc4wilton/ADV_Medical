@@ -53,66 +53,59 @@ if (_param isEqualTo 1) exitWith {
 	_return
 };
 
-call {
-	if ( _isMedic > 1 && (count _SAN_var) > 0 && { (_SAN_var select 0) isEqualType [] } ) exitWith {
-		_return = _SAN_var;
+if (_isMedic > 1 && {count _SAN_var > 0 && {(_SAN_var select 0) isEqualType []}}) then {
+	_return = _SAN_var;
+} else if (_isMedic isEqualTo 1 && {count _CLS_var > 0 && {_CLS_var select 0 isEqualType []}}) then {
+	_return = _CLS_var;
+} else if (_ML > 1 && {_isMedic > 1}) then {
+	_return = [
+		["ACE_fieldDressing",32]
+		,["ACE_elasticBandage",32]
+		,["ACE_packingBandage",24]
+		,["ACE_epinephrine",12]
+		,["ACE_morphine",12]
+		,["ACE_tourniquet",6]
+		,["ACE_plasmaIV_500",12]
+	];
+	if ( _SK > 0 ) then {
+		_return pushBack ["ACE_surgicalKit",5];
 	};
-	if ( _isMedic isEqualTo 1 && (count _CLS_var) > 0 && { (_CLS_var select 0) isEqualType [] } ) exitWith {
-		_return = _CLS_var;
+	if ( _splint && !_hHPAAB ) then {
+		_return pushBack ["adv_aceSplint_splint",12];
 	};
-	if (_ML > 1 && _isMedic > 1) exitWith {
-		_return = [
-			["ACE_fieldDressing",32]
-			,["ACE_elasticBandage",32]
-			,["ACE_packingBandage",24]
-			,["ACE_epinephrine",12]
-			,["ACE_morphine",12]
-			,["ACE_tourniquet",6]
-			,["ACE_plasmaIV_500",12]
-		];
-		if ( _SK > 0 ) then {
-			_return pushBack ["ACE_surgicalKit",5];
-		};
-		if ( _splint && !_hHPAAB ) then {
-			_return pushBack ["adv_aceSplint_splint",12];
-		};
-		if ( _kat_circulation ) then {
-			_return pushBack ["ace_atropine",6];
-		};
+	if ( _kat_circulation ) then {
+		_return pushBack ["ace_atropine",6];
 	};
-	if (_ML > 1 && _isMedic isEqualTo 1) exitWith {
-		_return = [
-			["ACE_fieldDressing",6]
-			,["ACE_elasticBandage",24]
-			,["ACE_packingBandage",24]
-			,["ACE_epinephrine",6]
-			,["ACE_morphine",6]
-			,["ACE_tourniquet",3]
-			,["ACE_plasmaIV_500",8]
-		];
-		if ( _SK > 0 ) then {
-			_return pushBack ["ACE_surgicalKit",5];
-		};
-		if ( _splint && !_hHPAAB ) then {
-			_return pushBack ["adv_aceSplint_splint",4];
-		};
+} else if (_ML > 1 && {_isMedic isEqualTo 1}) then {
+	_return = [
+		["ACE_fieldDressing",6]
+		,["ACE_elasticBandage",24]
+		,["ACE_packingBandage",24]
+		,["ACE_epinephrine",6]
+		,["ACE_morphine",6]
+		,["ACE_tourniquet",3]
+		,["ACE_plasmaIV_500",8]
+	];
+	if ( _SK > 0 ) then {
+		_return pushBack ["ACE_surgicalKit",5];
 	};
-	if (_isMedic > 1) exitWith {
-		_return = [
-			["ACE_fieldDressing",64]
-			,["ACE_epinephrine",12]
-			,["ACE_morphine",12]
-			,["ACE_bloodIV_500",12]
-		];
+	if ( _splint && !_hHPAAB ) then {
+		_return pushBack ["adv_aceSplint_splint",4];
 	};
-	if (_isMedic isEqualTo 1) exitWith {
-		_return = [
-			["ACE_fieldDressing",48]
-			,["ACE_epinephrine",6]
-			,["ACE_morphine",6]
-			,["ACE_bloodIV_500",8]
-		];	
-	};
+} else if (_isMedic > 1) then {
+	_return = [
+		["ACE_fieldDressing",64]
+		,["ACE_epinephrine",12]
+		,["ACE_morphine",12]
+		,["ACE_bloodIV_500",12]
+	];
+} else if (_isMedic isEqualTo 1) then {
+	_return = [
+		["ACE_fieldDressing",48]
+		,["ACE_epinephrine",6]
+		,["ACE_morphine",6]
+		,["ACE_bloodIV_500",8]
+	];
 };
 
 _return

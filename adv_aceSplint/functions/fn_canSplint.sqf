@@ -9,10 +9,11 @@ private _enable = missionNamespace getVariable ["adv_aceSplint_enable",true];
 
 if ( _hhpaab || !_enable ) exitWith { false };
 
-private _hitPoint = call {
-	if ( (toLower _selection) in ["hand_l","hand_r"] ) exitWith {"HitHands"};
-	if ( (toLower _selection) in ["leg_l","leg_r"] ) exitWith {"HitLegs"};
-	_selection
+private _hitPoint = _selection;
+if ((toLower _selection) in ["hand_l","hand_r"]) then {
+	_hitPoint = "HitHands";
+} else if ((toLower _selection) in ["leg_l","leg_r"]) then {
+	_hitPoint = "HitLegs";
 };
 
 if ((_target getHitPointDamage _hitPoint) < 0.5) exitWith { false };
