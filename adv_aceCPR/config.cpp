@@ -4,7 +4,6 @@
     {
         units[] = {
 			"adv_aceCPR_AEDItem"
-			//,"adv_aceCPR_AEDStation"
 		};
         weapons[] = {
 			"adv_aceCPR_AED"
@@ -25,24 +24,6 @@
     name = #ITEM; \
     count = COUNT; \
 }
-
-#define MACRO_AED_STATION class ACE_Actions { \
-	class ACE_MainActions { \
-		condition = "true"; \
-		displayName = "Interactions"; \
-		distance = 2; \
-		selection = ""; \
-		class adv_aceCPR_aed_station { \
-			priority = -1; \
-			showDisabled = 0; \
-			displayName = "$STR_ADV_ACECPR_AED_STATION_ACTION"; \
-			condition = "missionNamespace getVariable ['adv_aceCPR_enable',true] && !(_player getVariable ['adv_aceCPR_usedAEDStation',false]) && (_player getVariable ['ace_medical_medicClass',0]) > 0"; \
-			statement = "[_player,_target] call adv_aceCPR_fnc_useAEDStation"; \
-			exceptions[] = {"isNotInside"}; \
-			icon = "\adv_aceCPR\ui\defib_action.paa"; \
-		};\
-	};\
-};
 
 class CfgFunctions {
 	class adv_aceCPR {
@@ -131,26 +112,9 @@ class cfgVehicles {
             MACRO_ADDITEM(adv_aceCPR_AED,1);
         };
 	};
-	/*
-	class adv_aceCPR_AEDStation: Item_Base_F {
-        scope = 2;
-        scopeCurator = 2;
-        displayName = "$STR_ADV_ACECPR_AEDSTATION_DISPLAYNAME";
-        author = "[SeL] Belbo";
-        vehicleClass = "Items";
-		model = "\adv_aceCPR\ui\defi.p3d";
-		MACRO_AED_STATION
-		ace_dragging_canCarry = 1;
-		ace_dragging_carryPosition[] = {0,1,1};
-		ace_dragging_carryDirection = 270;
-        ace_cargo_size = 1;
-		ace_cargo_canLoad = 1;
-	};
-	*/
 
 	class Items_base_F;
 	class Land_Defibrillator_F: Items_base_F {
-		//MACRO_AED_STATION
 		ace_dragging_canCarry = 1;
 		ace_dragging_carryPosition[] = {0,1,1};
 		ace_dragging_carryDirection = 270;
