@@ -12,7 +12,8 @@ private _probabilities = missionNamespace getVariable ["adv_aceCPR_probabilities
 private _probability = _probabilities select 2;
 if (_medicLevel isEqualTo 2) then {
 	_probability = _probabilities select 0;
-} else if (_medicLevel isEqualTo 1) then {
+};
+if (_medicLevel isEqualTo 1) then {
 	_probability = _probabilities select 1;
 };
 
@@ -47,8 +48,10 @@ private _bloodLoss = [_caller, _target] call adv_aceCPR_fnc_getBloodLoss;
 private _probabilityLoss = 0;
 if (_bloodLoss >= 0.3) then {
 	_probabilityLoss = 10 + floor random 15;
-} else if (_bloodLoss >= 0.15) then {
-	_probabilityLoss = 5 + floor random 8;
+} else {
+	if (_bloodLoss >= 0.15) then {
+		_probabilityLoss = 5 + floor random 8;
+	};
 };
 _probability = _probability - _probabilityLoss;	
 
